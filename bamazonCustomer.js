@@ -30,7 +30,7 @@ connection.connect(function (err) {
 function purchase() {
     inquirer.prompt([{
         type: "input",
-        message: "Which item ID of the product you would like to purchase?",
+        message: "What is the item ID of the product you would like to purchase?",
         name: "ID"
     }, {
         type: "input",
@@ -50,11 +50,26 @@ function purchase() {
                     console.log("Processing Order...")
                 });
 
+                
+
                 connection.query("SELECT price FROM products WHERE ?", { item_id: answers.ID }, function (err, res) {
                     if (err) throw err;
                     var total = parseFloat(answers.quantity * res[0].price * 1.1);
                     var totRound = total.toFixed(2);
                     console.log("Your total is $" + totRound + " including a 10% tax");
+                    connection.query("SELECT department_name FROM products WHERE ?", [{
+                        item_id: answers.ID
+                    }], function (err, result) {
+                        if (err) throw err;
+                        console.log(result);
+                        connection.query("UPDATE departments SET product_sales = product_sales + ? WHERE ?", [
+                            totRound, {
+                            department_name: result[0].department_name
+                        }], function (err, res) {
+                            if (err) throw err;
+                        });
+                    });
+    
                     restart();
                 })
             } else {

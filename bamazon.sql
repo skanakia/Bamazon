@@ -13,6 +13,14 @@ CREATE TABLE products (
     PRIMARY KEY (item_id)
 );
 
+CREATE TABLE departments (
+    department_id INTEGER(11) AUTO_INCREMENT NOT NULL,
+    department_name VARCHAR(45),
+    over_head_costs DECIMAL(10,2),
+    product_sales DECIMAL(10,2),
+    PRIMARY KEY (department_id) 
+);
+
 INSERT INTO products (product_name, department_name, price, stock_quantity)
 VALUES ("Toaster", "Kitchen Appliances", 49.99, 10);
 
@@ -42,3 +50,21 @@ VALUES ("Iphone X", "Electronics", 1099.99, 3);
 
 INSERT INTO products (product_name, department_name, price, stock_quantity)
 VALUES ("HD TV", "Electronics", 149.99, 7);
+
+
+
+
+INSERT INTO departments ( department_name, over_head_costs, product_sales)
+VALUES ("Kitchen Appliances", 5000.00, 5000.00);
+
+INSERT INTO departments ( department_name, over_head_costs, product_sales)
+VALUES ("Clothing", 3000.00, 4000.00);
+
+INSERT INTO departments ( department_name, over_head_costs, product_sales)
+VALUES ("Office Supplies", 2000.00, 1000.00);
+
+INSERT INTO departments ( department_name, over_head_costs, product_sales)
+VALUES ("Food", 1500.00, 2000.00);
+
+INSERT INTO departments ( department_name, over_head_costs, product_sales)
+VALUES ("Electronics", 8500.00, 8000.00);
