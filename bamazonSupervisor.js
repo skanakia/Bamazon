@@ -1,13 +1,7 @@
 var inquirer = require("inquirer");
 var mysql = require("mysql");
 var Table = require('cli-table');
- 
 
-var table = new Table({
-    head: ['Department ID', 'Department Name', 'Overhead Costs', 'Product Sales', 'Total Profit']
-  , colWidths: [15, 20, 18, 15, 15]
-});
- 
 
 var connection = mysql.createConnection({
     host: "localhost",
@@ -52,10 +46,13 @@ function start() {
 function viewDep() {
     connection.query("SELECT * FROM departments", function (err, res) {
         if (err) throw err;
-        for (var i = 0; i < res.length; i++){
+        var table = new Table({
+            head: ['Department ID', 'Department Name', 'Overhead Costs', 'Product Sales', 'Total Profit']
+            , colWidths: [15, 20, 18, 15, 15]
+        });
+        for (var i = 0; i < res.length; i++) {
             var profit = res[i].product_sales - res[i].over_head_costs;
             table.push([res[i].department_id, res[i].department_name, res[i].over_head_costs, res[i].product_sales, profit]);
-           
         }
         console.log(table.toString());
         start();
@@ -73,15 +70,15 @@ function createDep() {
         name: "overhead"
     }]).then(answers => {
         connection.query("INSERT INTO departments SET ?",
-        {
-          department_name: answers.department,
-          over_head_costs: answers.overhead,
-          product_sales: 0
-        },
-        function(err) {
-          if (err) throw err;
-          console.log("Your department was successfully created!");
-        });
+            {
+                department_name: answers.department,
+                over_head_costs: answers.overhead,
+                product_sales: 0
+            },
+            function (err) {
+                if (err) throw err;
+                console.log("Your department was successfully created!");
+            });
         start()
     });
 }
